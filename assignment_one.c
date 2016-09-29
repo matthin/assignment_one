@@ -24,12 +24,12 @@
 /*
  * Register Defines
  */
-#define REG_ACCUM       0
-#define REG_COUNTER     1
-#define REG_INSTRUCTION 2
-#define REG_OPCODE      3
-#define REG_OPERAND     4
-#define REG_VALID       5
+#define REG_ACCUM   0
+#define REG_COUNTER 1
+#define REG_INSTR   2
+#define REG_OPCODE  3
+#define REG_OPERAND 4
+#define REG_VALID   5
 
 /*
  * Globals
@@ -81,16 +81,20 @@ void load_sml() {
 }
 
 void execute_sml() {
-  int opcode, operand, done = true, instruction_counter = 0;
+  int done = false;
 
   while (!done) {
-    opcode = words[instruction_counter] / 1000;
-    operand = words[instruction_counter] % 1000;
+    registers[REG_OPCODE] = words[registers[REG_COUNTER]] / 1000;
+    registers[REG_OPERAND] = words[registers[REG_COUNTER]] % 1000;
 
-    switch (opcode) {
+    printf("%d\n", registers[REG_OPCODE]);
+    switch (registers[REG_OPCODE]) {
     case READ:
-      break;
     case SAVE:
+      scanf("%d", &words[registers[REG_OPERAND]]);
+      break;
+    case LOAD:
+      scanf("%d", &registers[REG_ACCUM]);
       break;
     case HALT:
       done = 1;
@@ -100,7 +104,7 @@ void execute_sml() {
     }
 
     if (!done) {
-      instruction_counter++;
+      registers[REG_COUNTER]++;
     }
   }
 }
@@ -109,8 +113,14 @@ void dump(const int status) {
   int i = 0;
 
   puts("REGISTERS:");
-  printf("MEMORY:\n\n");
+  printf("accumulator %d\n", registers[REG_ACCUM]);
+  printf("instructioncounter %d\n", registers[REG_COUNTER]);
+  printf("instructionregister %d\n", registers[REG_INSTR]);
+  printf("operationcode %d\n", registers[REG_OPCODE]);
+  printf("operand %d\n", registers[REG_OPERAND]);
+  printf("ValidInstructions %d\n\n", registers[REG_VALID]);
 
+  printf("MEMORY:\n\n");
   for (;;) {
     if (words[i] == 50505) {
       break;
