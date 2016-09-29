@@ -5,6 +5,7 @@
 /*
  * Operation Codes
  */
+#define SIZE 1000
 #define READ 10
 #define SAVE 11
 
@@ -17,7 +18,7 @@
 #define MULTIPLY  33
 
 #define BRANCH     40
-#define BRANCHING  41
+#define BRANCHNEG  41
 #define BRANCHZERO 42
 #define HALT       43
 
@@ -34,7 +35,7 @@
 /*
  * Globals
  */
-int words[1000];
+int words[SIZE];
 int registers[6];
 
 /*
@@ -93,7 +94,25 @@ void execute_sml() {
       scanf("%d", &words[registers[REG_OPERAND]]);
       break;
     case LOAD:
-      scanf("%d", &registers[REG_ACCUM]);
+      registers[REG_ACCUM] = words[registers[REG_OPERAND]];
+      break;
+    case ADD:
+      registers[REG_ACCUM] += words[registers[REG_OPERAND]];
+      break;
+    case SUBSTRACT:
+      registers[REG_ACCUM] -= words[registers[REG_OPERAND]];
+      break;
+    case DIVIDE:
+      registers[REG_ACCUM] /= words[registers[REG_OPERAND]];
+      break;
+    case MULTIPLY:
+      registers[REG_ACCUM] *= words[registers[REG_OPERAND]];
+      break;
+    case BRANCH:
+      break;
+    case BRANCHNEG:
+      break;
+    case BRANCHZERO:
       break;
     case HALT:
       done = 1;
