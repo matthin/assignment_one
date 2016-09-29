@@ -87,7 +87,6 @@ void execute_sml() {
     registers[REG_OPCODE] = words[registers[REG_COUNTER]] / 1000;
     registers[REG_OPERAND] = words[registers[REG_COUNTER]] % 1000;
 
-    printf("%d\n", registers[REG_OPCODE]);
     switch (registers[REG_OPCODE]) {
     case READ:
     case SAVE:
