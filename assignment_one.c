@@ -109,13 +109,20 @@ void execute_sml() {
       registers[REG_ACCUM] *= words[registers[REG_OPERAND]];
       break;
     case BRANCH:
+      registers[REG_COUNTER] = registers[REG_OPERAND] - 1;
       break;
     case BRANCHNEG:
+      if (registers[REG_ACCUM] < 0) {
+        registers[REG_COUNTER] = registers[REG_OPERAND] - 1;
+      }
       break;
     case BRANCHZERO:
+      if (registers[REG_ACCUM] == 0) {
+        registers[REG_COUNTER] = registers[REG_OPERAND] - 1;
+      }
       break;
     case HALT:
-      done = 1;
+      done = true;
       break;
     default:
       dump(1);
@@ -128,7 +135,7 @@ void execute_sml() {
 }
 
 void dump(const int status) {
-  int i = 0;
+  int i;
 
   puts("REGISTERS:");
   printf("accumulator %d\n", registers[REG_ACCUM]);
@@ -139,12 +146,8 @@ void dump(const int status) {
   printf("ValidInstructions %d\n\n", registers[REG_VALID]);
 
   printf("MEMORY:\n\n");
-  for (;;) {
-    if (words[i] == 50505) {
-      break;
-    }
-
-    printf("%+d ", words[i++]);
+  for (i = 0; i < 20; ++i) {
+    printf("%+d ", words[i]);
   }
 
   puts("");
