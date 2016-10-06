@@ -92,6 +92,7 @@ void execute_sml() {
     case READ:
     case SAVE:
       scanf("%d", &words[registers[REG_OPERAND]]);
+      if ()
       break;
     case LOAD:
       registers[REG_ACCUM] = words[registers[REG_OPERAND]];
@@ -103,6 +104,10 @@ void execute_sml() {
       registers[REG_ACCUM] -= words[registers[REG_OPERAND]];
       break;
     case DIVIDE:
+      if (words[registers[REG_OPERAND]] == 0) {
+        puts("*** ABEND: attempted division by 0 ***");
+        dump(1);
+      }
       registers[REG_ACCUM] /= words[registers[REG_OPERAND]];
       break;
     case MULTIPLY:
